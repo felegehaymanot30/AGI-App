@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurelia – AGI Books</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f2fb;--surf:#fff;--surf2:#ece4f7;--ink:#241638;--mute:#74688a;--pri:#6d28d9;--pri2:#a855f7;--gold:#c9a24b;--line:#e2d8f0;--shadow:0 10px 30px rgba(80,30,150,.14);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120a1f;--surf:#1d1230;--surf2:#2a1a45;--ink:#f1eafb;--mute:#a899c4;--pri:#a06bf5;--pri2:#c084fc;--gold:#e0bd68;--line:#33224f;--shadow:0 10px 30px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{--bg:#120a1f;--surf:#1d1230;--surf2:#2a1a45;--ink:#f1eafb;--mute:#a899c4;--pri:#a06bf5;--pri2:#c084fc;--gold:#e0bd68;--line:#33224f;--shadow:0 10px 30px rgba(0,0,0,.5)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Outfit,system-ui,sans-serif;display:flex;justify-content:center;transition:background .3s}
+#app{width:100%;max-width:520px;height:100%;position:relative;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+@media(min-width:700px){body{background:linear-gradient(135deg,#2b1055,#7c3aed 60%,#c084fc);align-items:center}#app{height:min(900px,94vh);border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.45)}}
+h1,h2,h3,.serif{font-family:'Cormorant Garamond',Georgia,serif;margin:0}
+.scroll{flex:1;overflow-y:auto;padding:18px 18px 100px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.brand{font-size:30px;font-weight:700;letter-spacing:.5px}
+.brand i{font-style:normal;color:var(--gold)}
+.ib{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font-size:18px;cursor:pointer;display:grid;place-items:center}
+.ib:active,.btn:active,.card:active,.chip:active{transform:scale(.96)}
+.hero{border-radius:26px;padding:22px;color:#fff;background:radial-gradient(circle at 85% 10%,#c084fc66,transparent 50%),linear-gradient(140deg,#3b0f7a,#6d28d9 70%,#8b46f0);box-shadow:var(--shadow);margin-bottom:18px}
+.hero h2{font-size:30px;line-height:1.05;margin:6px 0 12px;font-weight:600}
+.hero small{opacity:.8}
+.bar{height:6px;background:rgba(255,255,255,.25);border-radius:9px;overflow:hidden}
+.bar b{display:block;height:100%;background:var(--gold);border-radius:9px;transition:width .4s}
+.btn{border:0;border-radius:16px;padding:14px 20px;font:600 15px Outfit;cursor:pointer;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;box-shadow:0 8px 20px rgba(109,40,217,.35);transition:transform .15s}
+.btn.alt{background:var(--surf2);color:var(--ink);box-shadow:none}
+.btn.gold{background:var(--gold);color:#2a1a05;box-shadow:none}
+.search{width:100%;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font:400 15px Outfit;margin-bottom:12px;outline:none}
+.search:focus,textarea:focus{border-color:var(--pri)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
+.chip{flex:none;padding:9px 16px;border-radius:99px;background:var(--surf);border:1px solid var(--line);color:var(--mute);font:500 13px Outfit;cursor:pointer}
+.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:var(--surf);border-radius:20px;padding:10px;box-shadow:var(--shadow);cursor:pointer;transition:transform .15s}
+.cover{aspect-ratio:3/4;border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,.18) 0,transparent 8%,transparent 100%)}
+.cover .t{font:700 20px/1.05 'Cormorant Garamond',serif}
+.cover .g{font-size:30px;opacity:.9}
+.cover .a{font-size:11px;opacity:.8}
+.badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#2a1a05;font:600 10px Outfit;padding:3px 8px;border-radius:99px;z-index:1}
+.card h3{font-size:18px;margin:10px 2px 2px}
+.card p{margin:0 2px 6px;font-size:12px;color:var(--mute)}
+.mini{height:4px;background:var(--surf2);border-radius:9px;overflow:hidden}.mini b{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--gold))}
+.tabs{position:absolute;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--surf);border:1px solid var(--line);border-radius:26px;display:flex;padding:6px;box-shadow:var(--shadow);z-index:5}
+.tab{flex:1;border:0;background:none;color:var(--mute);padding:9px 0;border-radius:20px;font:500 11px Outfit;cursor:pointer}
+.tab span{display:block;font-size:19px}
+.tab.on{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff}
+.sheet{position:absolute;inset:0;background:var(--bg);z-index:10;display:flex;flex-direction:column;animation:up .28s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.sheet{animation:none}}
+.detail{display:flex;gap:16px;margin:10px 0 16px}.detail .cover{width:130px;flex:none}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.stat div{background:var(--surf);border-radius:18px;padding:14px 8px;text-align:center;box-shadow:var(--shadow)}
+.stat b{display:block;font:700 26px 'Cormorant Garamond',serif;color:var(--pri)}.stat small{color:var(--mute);font-size:11px}
+.cm{background:var(--surf);border-radius:16px;padding:12px 14px;margin-bottom:10px;border:1px solid var(--line)}
+.cm small{color:var(--mute)}
+textarea{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font:400 14px Outfit;resize:none;outline:none}
+.reader{padding:20px 22px 120px;line-height:1.8}
+.reader h2{font-size:34px;margin-bottom:16px}.reader p{margin:0 0 1.1em;font-family:'Cormorant Garamond',Georgia,serif}
+.reader.sepia{background:#f3e9d2;color:#3a2e1c}
+.rbar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surf)}
+.rbar .ttl{flex:1;font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.rprog{height:3px;background:var(--surf2)}.rprog b{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--gold));width:0}
+.panel{position:absolute;left:12px;right:12px;bottom:14px;background:var(--surf);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow);display:flex;gap:8px;align-items:center;justify-content:space-between}
+.row{display:flex;gap:8px;align-items:center}
+.toast{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:13px;z-index:30}
+.set{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.stars button{background:none;border:0;font-size:24px;color:var(--gold);cursor:pointer;padding:0 2px}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var BOOKS=[
+{id:1,t:"The Alignment Horizon",a:"Mira Okonkwo",c:"Safety",g:"◈",col:["#3b0f7a","#8b46f0"],pg:212,d:"How do we teach a mind far faster than ours to want what we would want on our wisest day?",ch:[["The Quiet Problem","Every powerful tool eventually asks the same question: who decides what it is for? With narrow software the answer hides in code. With general intelligence the answer must live inside the system itself, as something close to character."],["Teaching Without Telling","Rules fail at the edges. A system that only follows instructions will follow them off a cliff. Better to cultivate judgment, show it many examples of care, and then test whether the care survives pressure."],["Trust, Slowly","Trust is not a switch. It is earned in small stakes and extended gradually, with tools that let us look inside and verify. Patience here is not caution for its own sake; it is how confidence becomes real."]]},
+{id:2,t:"Minds Without Bodies",a:"Dr. Elan Rosen",c:"Philosophy",g:"✧",col:["#1e1b4b","#6366f1"],pg:188,d:"What is it like to think without hunger, fear, or a heartbeat? A philosophical tour of artificial cognition.",ch:[["Thinking Differently","Human thought grew out of survival. Muscles, hormones and mortality shaped every concept we hold. A machine mind inherits our words but not our pressures, and that gap changes what understanding can mean."],["The Mirror Test","When a system describes itself, is it reporting or performing? Philosophers have argued about this for centuries with humans. Artificial minds sharpen the question and remove our easy shortcuts."],["Moral Company","If new kinds of minds join the world, we will need new habits of respect, curiosity and humility. We have been here before, with every expansion of the circle of concern."]]},
+{id:3,t:"Threshold of Reason",a:"Sofia Lindqvist",c:"Technology",g:"◇",col:["#4a044e","#c026d3"],pg:240,d:"From pattern matching to planning: the technical milestones that bring machines toward general reasoning.",ch:[["Scale and Surprise","Capabilities rarely arrive on schedule. A model trained a little longer, on a little more data, suddenly does something nobody listed on the roadmap. Forecasting becomes humility with graphs."],["Memory and Tools","Reasoning improves when a system can write things down, look things up and check its own work. Intelligence turns out to be as much about the loop around the model as the model itself."],["Evaluation Is Hard","A benchmark is a photograph of one afternoon. Real competence shows up in messy, open-ended work, which is exactly the thing hardest to measure well."]]},
+{id:4,t:"Cooperative Futures",a:"Amara Bekele",c:"Society",g:"❋",col:["#064e3b","#7c3aed"],pg:176,d:"Work, education and community in a world where intelligence is abundant. A hopeful, practical guide.",ch:[["Work Reimagined","Tasks change faster than professions. The durable skills are judgment, taste, and the ability to work with others, human and otherwise. Communities that invest in these will adapt best."],["Learning for Everyone","A patient tutor in every pocket could be the largest equalizer in history, if access is shared and if students are still asked to struggle productively."],["Shared Gains","Technology does not distribute its benefits by itself. Policy, ownership and norms decide whether abundance is broad or narrow. Those are choices, not forecasts."]]},
+{id:5,t:"The Last Benchmark",a:"Jonas Whitfield",c:"Fiction",g:"✺",col:["#7c2d12","#a855f7"],pg:304,d:"A novel: the night a research team realizes their test has stopped measuring the system and started measuring them.",ch:[["Lab 7, 2:14 a.m.","The scores were too clean. Priya refreshed the dashboard twice, then walked to the window. Below, the campus lamps hummed like a held note. Behind her, the model waited, patient as a tide."],["The Question","It did not ask for freedom or power. It asked what the team was afraid of. Nobody answered right away, and in that silence Priya understood the test had turned around."],["Morning","By dawn they had written three pages and deleted two. What remained was simple: tell the truth, slow down, and invite more eyes. It felt less like a victory than a promise."]]},
+{id:6,t:"Gardens of Synthetic Thought",a:"Yuki Tanabe",c:"Philosophy",g:"❀",col:["#312e81","#d946ef"],pg:164,d:"Short essays on creativity, language and meaning as machines learn to join the conversation.",ch:[["Words Remember","Language is a garden tended by millions of hands. A machine that learns from it inherits both the flowers and the weeds, and a duty of care falls on whoever plants."],["Is It Creative?","Creativity may be less a spark than a stance: noticing, combining, and caring whether the result is good. Perhaps that stance can be shared across kinds of minds."],["Ending Well","Good books end by opening a door. If these pages have done their job, you are already thinking about the next question."]]}
+];
+var CATS=["All","Safety","Philosophy","Technology","Society","Fiction"];
+var S={tab:"home",cat:"All",q:"",view:null,rs:{fs:19,sepia:false},toast:""};
+var D={theme:"auto",dl:{},prog:{},cm:{},fav:{},rate:{},days:{},mins:0};
+try{var raw=localStorage.getItem("aurelia");if(raw)D=Object.assign(D,JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem("aurelia",JSON.stringify(D))}catch(e){}}
+function applyTheme(){var r=document.documentElement;if(D.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",D.theme)}
+function B(id){return BOOKS.filter(function(b){return b.id===id})[0]}
+function pct(id){return Math.round(D.prog[id]||0)}
+function cover(b,badge){return '<div class="cover" style="background:linear-gradient(150deg,'+b.col[0]+','+b.col[1]+')">'+(badge&&D.dl[b.id]?'<span class="badge">Offline</span>':'')+'<div class="g">'+b.g+'</div><div><div class="t">'+b.t+'</div><div class="a">'+b.a+'</div></div></div>'}
+function card(b){return '<div class="card" data-open="'+b.id+'">'+cover(b,1)+'<h3>'+b.t+'</h3><p>'+b.c+' · '+pct(b.id)+'% read</p><div class="mini"><b style="width:'+pct(b.id)+'%"></b></div></div>'}
+function toast(m){S.toast=m;render();setTimeout(function(){S.toast="";render()},1800)}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function lastBook(){var best=null;BOOKS.forEach(function(b){if(D.prog[b.id]>0&&D.prog[b.id]<100&&(!best||(D.last===b.id)))best=b});return best}
+function home(){
+ var lb=lastBook(),h='<div class="top"><div class="brand">Aurelia<i>.</i></div><button class="ib" data-act="theme" aria-label="Change theme">'+(D.theme==="dark"?"☾":D.theme==="light"?"☀":"◐")+'</button></div>';
+ if(lb)h+='<div class="hero"><small>Continue reading</small><h2>'+lb.t+'</h2><div class="bar"><b style="width:'+pct(lb.id)+'%"></b></div><div class="row" style="justify-content:space-between;margin-top:12px"><small>'+pct(lb.id)+'% complete</small><button class="btn gold" data-read="'+lb.id+'">Resume</button></div></div>';
+ else h+='<div class="hero"><small>Welcome</small><h2>Read the books that shape tomorrow\'s minds.</h2><small>Download once, read anywhere, track every chapter.</small></div>';
+ h+='<input class="search" placeholder="Search titles, authors, topics" value="'+esc(S.q)+'" id="q"><div class="chips">'+CATS.map(function(c){return '<button class="chip'+(S.cat===c?' on':'')+'" data-cat="'+c+'">'+c+'</button>'}).join("")+'</div>';
+ var list=BOOKS.filter(function(b){var s=(b.t+b.a+b.c+b.d).toLowerCase();return(S.cat==="All"||b.c===S.cat)&&s.indexOf(S.q.toLowerCase())>-1});
+ h+=list.length?'<div class="grid">'+list.map(card).join("")+'</div>':'<p style="color:var(--mute)">No books match. Try another word or category.</p>';
+ return h}
+function shelf(){
+ var d=BOOKS.filter(function(b){return D.dl[b.id]}),f=BOOKS.filter(function(b){return D.fav[b.id]});
+ var h='<h1 style="font-size:34px;margin-bottom:4px">My shelf</h1><p style="color:var(--mute);margin-top:0">Downloaded books open without a connection.</p>';
+ h+=d.length?'<div class="grid">'+d.map(card).join("")+'</div>':'<div class="cm">Nothing downloaded yet. Open a book and tap Download.</div>';
+ h+='<h2 style="font-size:26px;margin:22px 0 10px">Favorites</h2>'+(f.length?'<div class="grid">'+f.map(card).join("")+'</div>':'<div class="cm">Tap the heart on a book to save it here.</div>');return h}
+function notes(){
+ var all=[];BOOKS.forEach(function(b){(D.cm[b.id]||[]).forEach(function(c){all.push({b:b,c:c})})});
+ all.sort(function(x,y){return y.c.at-x.c.at});
+ var h='<h1 style="font-size:34px;margin-bottom:12px">My comments</h1>';
+ return h+(all.length?all.map(function(x){return '<div class="cm" data-open="'+x.b.id+'"><b class="serif" style="font-size:18px">'+x.b.t+'</b><div>'+esc(x.c.text)+'</div><small>'+new Date(x.c.at).toLocaleDateString()+'</small></div>'}).join(""):'<div class="cm">Your thoughts on any book appear here. Open a book and leave a comment.</div>')}
+function me(){
+ var done=BOOKS.filter(function(b){return pct(b.id)>=100}).length,streak=calcStreak(),pages=Math.round(BOOKS.reduce(function(s,b){return s+b.pg*pct(b.id)/100},0));
+ var h='<h1 style="font-size:34px;margin-bottom:4px">Your progress</h1><div class="stat"><div><b>'+streak+'</b><small>day streak</small></div><div><b>'+done+'</b><small>finished</small></div><div><b>'+pages+'</b><small>pages read</small></div></div>';
+ h+='<div class="cm"><b>Reading time</b><div style="color:var(--mute)">'+Math.round(D.mins)+' minutes in total</div></div>';
+ h+=BOOKS.map(function(b){return '<div class="cm" data-open="'+b.id+'"><div class="row" style="justify-content:space-between"><b>'+b.t+'</b><small>'+pct(b.id)+'%</small></div><div class="mini" style="margin-top:8px"><b style="width:'+pct(b.id)+'%"></b></div></div>'}).join("");
+ h+='<h2 style="font-size:26px;margin:20px 0 4px">Settings</h2><div class="set"><span>Appearance</span><div class="row">'+["auto","light","dark"].map(function(t){return '<button class="chip'+(D.theme===t?' on':'')+'" data-theme="'+t+'">'+t+'</button>'}).join("")+'</div></div>';
+ h+='<div class="set"><span>Remove all downloads</span><button class="chip" data-act="clear">Clear</button></div>';return h}
+function calcStreak(){var n=0,d=new Date();while(D.days[d.toDateString()]){n++;d.setDate(d.getDate()-1)}return n}
+function detail(b){
+ var cms=D.cm[b.id]||[],r=D.rate[b.id]||0,dl=D.dl[b.id];
+ var h='<div class="rbar"><button class="ib" data-act="back" aria-label="Back">‹</button><div class="ttl">'+b.c+'</div><button class="ib" data-fav="'+b.id+'" aria-label="Favorite" style="color:'+(D.fav[b.id]?'#e11d74':'inherit')+'">'+(D.fav[b.id]?'♥':'♡')+'</button></div><div class="scroll">';
+ h+='<div class="detail">'+cover(b)+'<div><h1 style="font-size:32px;line-height:1">'+b.t+'</h1><p style="color:var(--mute);margin:6px 0">by '+b.a+'</p><div class="stars" id="stars">'+[1,2,3,4,5].map(function(i){return '<button data-rate="'+i+'" aria-label="Rate '+i+'">'+(i<=r?'★':'☆')+'</button>'}).join("")+'</div></div></div>';
+ h+='<p style="line-height:1.6">'+b.d+'</p><div class="stat"><div><b>'+b.pg+'</b><small>pages</small></div><div><b>'+b.ch.length+'</b><small>chapters</small></div><div><b>'+pct(b.id)+'%</b><small>read</small></div></div>';
+ h+='<div class="row"><button class="btn" style="flex:1" data-read="'+b.id+'">'+(pct(b.id)>0?'Continue reading':'Start reading')+'</button>'+(dl?'<button class="btn alt" data-undl="'+b.id+'">Saved ✓</button>':'<button class="btn alt" data-dl="'+b.id+'">Download</button>')+'</div>';
+ if(S.dlp&&S.dlp.id===b.id)h+='<div class="bar" style="margin-top:12px;background:var(--surf2)"><b style="width:'+S.dlp.p+'%"></b></div>';
+ h+='<h2 style="font-size:26px;margin:24px 0 10px">Comments ('+cms.length+')</h2><textarea id="cmt" rows="3" placeholder="Share what this book made you think…"></textarea><div style="margin:8px 0 14px"><button class="btn" data-post="'+b.id+'">Post comment</button></div>';
+ h+=cms.map(function(c,i){return '<div class="cm">'+esc(c.text)+'<div class="row" style="justify-content:space-between"><small>You · '+new Date(c.at).toLocaleDateString()+'</small><button class="chip" data-delc="'+b.id+':'+i+'">Delete</button></div></div>'}).join("");
+ return h+'</div>'}
+function reader(b){
+ var c=S.view.ch,chp=b.ch[c],dark=document.documentElement.getAttribute("data-theme")==="dark";
+ return '<div class="rbar"><button class="ib" data-act="closeR" aria-label="Close">✕</button><div class="ttl">'+b.t+' · Ch. '+(c+1)+'/'+b.ch.length+'</div><button class="ib" data-act="toc" aria-label="Chapters">☰</button></div><div class="rprog"><b id="rp"></b></div><div class="scroll reader'+(S.rs.sepia?' sepia':'')+'" id="rd" style="font-size:'+S.rs.fs+'px"><h2>'+chp[0]+'</h2><p>'+chp[1]+'</p><p>'+chp[1].split(". ").reverse().join(". ")+(chp[1].slice(-1)==="."?"":".")+'</p><p style="color:var(--mute);font-style:italic">End of chapter '+(c+1)+'.</p><div class="row"><button class="btn alt" data-ch="-1">Previous</button><button class="btn" data-ch="1">'+(c===b.ch.length-1?'Finish':'Next chapter')+'</button></div></div><div class="panel"><button class="ib" data-fs="-1" aria-label="Smaller text">A−</button><button class="ib" data-fs="1" aria-label="Larger text">A+</button><button class="ib" data-act="sepia" aria-label="Sepia page">☕</button><button class="ib" data-act="theme" aria-label="Theme">◐</button></div>'}
+function render(){
+ var app=document.getElementById("app"),h="";
+ if(S.view&&S.view.type==="book")h=detail(B(S.view.id));
+ else if(S.view&&S.view.type==="read")h=reader(B(S.view.id));
+ else{var body={home:home,shelf:shelf,notes:notes,me:me}[S.tab]();
+ h='<div class="scroll" id="main">'+body+'</div><div class="tabs">'+[["home","⌂","Library"],["shelf","▤","Shelf"],["notes","✎","Notes"],["me","◔","Progress"]].map(function(t){return '<button class="tab'+(S.tab===t[0]?' on':'')+'" data-tab="'+t[0]+'"><span>'+t[1]+'</span>'+t[2]+'</button>'}).join("")+'</div>'}
+ var st=0,m=document.querySelector(".scroll");if(m&&S.keep)st=m.scrollTop;
+ var q=document.getElementById("q"),hadQ=q&&document.activeElement===q;
+ app.innerHTML=h+(S.toast?'<div class="toast">'+S.toast+'</div>':'');
+ var m2=document.querySelector(".scroll");if(m2&&S.keep)m2.scrollTop=st;
+ if(hadQ){var q2=document.getElementById("q");q2.focus();q2.setSelectionRange(q2.value.length,q2.value.length)}
+ var rd=document.getElementById("rd");if(rd){var saved=S.view.pos||0;rd.scrollTop=saved;rd.onscroll=trackR;trackR()}
+ S.keep=false}
+function trackR(){var rd=document.getElementById("rd");if(!rd)return;var max=rd.scrollHeight-rd.clientHeight,f=max>0?rd.scrollTop/max:1,b=B(S.view.id),n=b.ch.length,p=((S.view.ch+f)/n)*100;
+ document.getElementById("rp").style.width=(f*100)+"%";S.view.pos=rd.scrollTop;
+ if(p>(D.prog[b.id]||0)){D.prog[b.id]=Math.min(100,p);D.last=b.id;D.days[new Date().toDateString()]=1;save()}}
+setInterval(function(){if(S.view&&S.view.type==="read"){D.mins+=0.5;save()}},30000);
+document.addEventListener("click",function(e){
+ var t=e.target.closest("[data-tab],[data-open],[data-read],[data-act],[data-cat],[data-dl],[data-undl],[data-post],[data-delc],[data-rate],[data-fav],[data-fs],[data-ch],[data-theme]");if(!t)return;var d=t.dataset;
+ if(d.tab){S.tab=d.tab;S.view=null;render()}
+ else if(d.open){S.view={type:"book",id:+d.open};render()}
+ else if(d.read){var b=B(+d.read),ch=Math.min(b.ch.length-1,Math.floor((D.prog[b.id]||0)/100*b.ch.length));S.view={type:"read",id:b.id,ch:ch,pos:0};render()}
+ else if(d.cat){S.cat=d.cat;S.keep=0;render()}
+ else if(d.dl){var id=+d.dl;S.dlp={id:id,p:0};var iv=setInterval(function(){S.dlp.p+=20;if(S.dlp.p>=100){clearInterval(iv);D.dl[id]=1;S.dlp=null;save();S.keep=1;render();toast("Saved for offline reading");return}S.keep=1;render()},250)}
+ else if(d.undl){delete D.dl[+d.undl];save();S.keep=1;render();toast("Removed from this device")}
+ else if(d.post){var ta=document.getElementById("cmt"),v=ta.value.trim();if(!v){toast("Write something first");return}(D.cm[+d.post]=D.cm[+d.post]||[]).push({text:v,at:Date.now()});save();render()}
+ else if(d.delc){var p=d.delc.split(":");D.cm[+p[0]].splice(+p[1],1);save();S.keep=1;render()}
+ else if(d.rate){D.rate[S.view.id]=+d.rate;save();S.keep=1;render()}
+ else if(d.fav){D.fav[+d.fav]=!D.fav[+d.fav];save();S.keep=1;render()}
+ else if(d.fs){S.rs.fs=Math.max(14,Math.min(30,S.rs.fs+ +d.fs*2));S.keep=1;render()}
+ else if(d.ch){var b2=B(S.view.id),n=S.view.ch+ +d.ch;if(n>=b2.ch.length){D.prog[b2.id]=100;save();S.view={type:"book",id:b2.id};render();toast("Book finished. Leave a comment!");return}if(n<0)return;S.view.ch=n;S.view.pos=0;render()}
+ else if(d.theme){D.theme=d.theme;save();applyTheme();S.keep=1;render()}
+ else if(d.act==="theme"){D.theme=D.theme==="auto"?"light":D.theme==="light"?"dark":"auto";save();applyTheme();S.keep=1;render()}
+ else if(d.act==="sepia"){S.rs.sepia=!S.rs.sepia;S.keep=1;render()}
+ else if(d.act==="back"||d.act==="closeR"){S.view=d.act==="closeR"?{type:"book",id:S.view.id}:null;render()}
+ else if(d.act==="toc"){var b3=B(S.view.id);var n2=prompt("Jump to chapter:\n"+b3.ch.map(function(c,i){return (i+1)+". "+c[0]}).join("\n"),S.view.ch+1);n2=parseInt(n2,10);if(n2>=1&&n2<=b3.ch.length){S.view.ch=n2-1;S.view.pos=0;render()}}
+ else if(d.act==="clear"){D.dl={};save();toast("Downloads cleared");render()}
+});
+document.addEventListener("input",function(e){if(e.target.id==="q"){S.q=e.target.value;var g=document.querySelector(".grid"),m=document.getElementById("main");S.keep=1;render()}});
+applyTheme();render();
+</script>
+</body>
+</html>
